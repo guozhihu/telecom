@@ -10,19 +10,19 @@ import java.util.Properties;
  * Date: Create in 17:07 2018/9/17
  */
 public class PropertiesUtil {
-        public static Properties properties = null;
-
-        static {
-                InputStream is = ClassLoader.getSystemResourceAsStream("hbase_consumer.properties");
-                properties = new Properties();
-                try {
-                        properties.load(is);
-                } catch (IOException e) {
-                        e.printStackTrace();
-                }
+    public static Properties properties = null;
+    
+    static {
+        InputStream is = ClassLoader.getSystemResourceAsStream("hbase_consumer.properties");
+        properties = new Properties();
+        try {
+            properties.load(is);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
-        public static String getProperty(String key){
-                return properties.getProperty(key);
-        }
+    }
+    
+    public static String getProperty(String key) {
+        return properties.getProperty(key);
+    }
 }

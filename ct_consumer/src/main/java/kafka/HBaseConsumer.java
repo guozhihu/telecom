@@ -6,6 +6,7 @@ import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import utils.PropertiesUtil;
 
+import java.time.Duration;
 import java.util.Arrays;
 
 public class HBaseConsumer {
@@ -15,7 +16,8 @@ public class HBaseConsumer {
 
         HBaseDAO hd = new HBaseDAO();
         while(true){
-            ConsumerRecords<String, String> records = kafkaConsumer.poll(100);
+            // ConsumerRecords<String, String> records = kafkaConsumer.poll(100);
+            ConsumerRecords<String, String> records = kafkaConsumer.poll(Duration.ofMillis(100));
             for(ConsumerRecord<String, String> cr : records){
                 String oriValue = cr.value();
                 System.out.println(oriValue);

@@ -21,9 +21,15 @@
  */
 -->
 <configuration>
+	<!-- 指定hbase在HDFS上存储的路径,这里指定指定hdfs的服务名即可 -->
 	<property>
 		<name>hbase.rootdir</name>
 		<value>hdfs://sandan/hbase</value>
+	</property>
+	
+	<property>
+		<name>hbase.master.port</name>
+		<value>16000</value>
 	</property>
 
 	<!-- 指定hbase是分布式的 -->
@@ -31,15 +37,30 @@
 		<name>hbase.cluster.distributed</name>
 		<value>true</value>
 	</property>
-	
 	<property>
 		<name>hbase.tmp.dir</name>
-		<value>/home/hbase/hbase/tmp</value>
+		<value>/home/hadoop/app/hbase-1.2.0-cdh5.7.0/tmp</value>
 	</property>
-
+	
+	<property>
+		<name>hbase.zookeeper.property.clientPort</name>
+		<value>2181</value>
+	</property>
+	
 	<!-- 指定zk的地址，多个用“,”分割 -->
 	<property>
 		<name>hbase.zookeeper.quorum</name>
-		<value>hadoop3:2181,hadoop4:2181,hadoop5:2181</value>
+		<value>mini1,mini2,mini3</value>
 	</property>
+	
+	<property>
+		<name>hbase.zookeeper.property.dataDir</name>
+		<value>/home/hadoop/app/zookeeper-3.4.5-cdh5.7.0/hbaseData</value>
+	</property>
+
+	<property>
+		<name>hbase.coprocessor.region.classes</name>
+		<value>hbase.CalleeWriteObserver</value>
+	</property>
+
 </configuration>
