@@ -37,7 +37,7 @@ java -cp /home/hadoop/data/telecom_project/jars/ct_producer-1.0-SNAPSHOT.jar pro
 2.创建kafka主题calllog<br>
 kafka-topics.sh --zookeeper mini1:2181,mini2:2181,mini3:2181 --partitions 3 --replication-factor 3 --topic calllog --create<br>
 3.启动kafka控制台消费者（此消费者只用于测试使用）<br>
-kafka-console-consumer.sh --bootstrap-server mini1:9092,mini2:9092,mini3:9092 --topic calllog --from-beginning  0<br>
+kafka-console-consumer.sh --bootstrap-server mini1:9092,mini2:9092,mini3:9092 --topic calllog --from-beginning 0<br>
 4.配置flume，监控calllog.csv日志文件<br>
 编辑flume-calllog2kafka.conf配置文件，文件内容位于ct工程根目录下<br>
 5.运行日志生产脚本，将数据导入kafka中<br>
@@ -48,6 +48,31 @@ kafka-console-consumer.sh --bootstrap-server mini1:9092,mini2:9092,mini3:9092 --
 执行脚本<br>
 \> chmod 755 /home/hadoop/data/telecom_project/shell_scripts/flume_product_calllog_2_kafka.sh  
 \> /home/hadoop/data/telecom_project/shell_scripts/flume_product_calllog_2_kafka.sh  
-6.观察第3步骤的kafka消费者控制台，检测是否有数据导入到calllog主题中
-
+6.观察第3步骤的kafka消费者控制台，检测是否有数据导入到calllog主题中  
+7.打包并运行Hbase消费者代码  
+将工程ct_consumer工程下的pom.xml文件拷贝到一个临时目录下，如lib目录下  
+执行如下命令下载工程ct_consumer所有依赖的jar包  
+mvn -DoutputDirectory=./lib -DgroupId=com.china -DartifactId=ct_consumer -Dversion=1.0-SNAPSHOT dependency:copy-dependencies  
+将下载下来的lib目录上传到/home/hadoop/data/telecom_project/ct_consumer_lib/lib目录下  
+将ct_consumer工程模块打包ct_consumer-1.0-SNAPSHOT.jar，上传到
+/home/hadoop/data/telecom_project/ct_consumer_lib目录下  
+8.运行脚本将kafka中的数据处理后存放到Hbase中  
+\> vim kafka2hbase.sh  
+\#!/bin/bash  
+java -Djava.ext.dirs=/home/hadoop/data/telecom_project/ct_consumer_lib/lib/ -cp /home/hadoop/data/telecom_project/ct_consumer_lib/ct_consumer-1.0-SNAPSHOT.jar kafka.HBaseConsumer  
+执行脚本<br>
+\> chmod 755 /home/hadoop/data/telecom_project/shell_scripts/kafka2hbase.sh  
+\> sh /home/hadoop/data/telecom_project/shell_scripts/kafka2hbase.sh  
+这里还有一种方式，但是不能用脚本执行该命令，只能手动执行该命令  
+java -cp /home/hadoop/data/telecom_project/ct_consumer_lib/ct_consumer-1.0-SNAPSHOT.jar:/home/hado/data/telecom_project/ct_consumer_lib/lib/* kafka.HBaseConsumer  
+9.优化数据存储方案  
+(1)编写协处理器类CalleeWriteObserver，为表设置协处理器，即在“表描述器”中调用addCoprocessor方法进行协处理器的设置  
+(2)在协处理器中，在一条主叫日志成功插入后，将该日志切换为被叫日志再次插入一次，放到与主叫日志不用的列族中  
+(3)重新编译ct_consumer工程，将ct_consumer-1.0-SNAPSHOT.jar群发到所有HBase的物理机器上，放到$HBASE_HOME/lib目录下  
+(4)在一台机器上修改hbase-site.xml  
+\<property>  
+&ensp;&ensp;&ensp;&ensp;&ensp;\<name>hbase.coprocessor.region.classes\</name>  
+&ensp;&ensp;&ensp;&ensp;&ensp;\<value>com.china.coprocessor.CalleeWriteObserver\</value>  
+\</property>  
+修改后群发到其他HBase所在的机器节点上
 ### 数据分析
