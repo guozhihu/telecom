@@ -85,7 +85,7 @@ java -cp /home/hadoop/data/telecom_project/ct_consumer_lib/ct_consumer-1.0-SNAPS
 * Mysql中的表结构设计<br>
 <table>
 <tr><th>列</th><th>备注</th><th>类型</th></tr>
-<tr><td style="text-align: center">id</td><td style="text-align: center">自增主键</td><td style="text-align: center">int(11) NOT NULL</td></tr>
+<tr><td text-align="center" border="1">id</td><td style="text-align: center">自增主键</td><td style="text-align: center">int(11) NOT NULL</td></tr>
 <tr><td style="text-align: center">telephone</td><td style="text-align: center">手机号码</td><td style="text-align: center">varchar(255) NOT NULL</td></tr>
 <tr><td style="text-align: center">name</td><td style="text-align: center">联系人姓名</td><td style="text-align: center">varchar(255) NOT NULL</td></tr>
 </table>
