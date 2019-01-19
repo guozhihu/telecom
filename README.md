@@ -88,7 +88,7 @@ java -cp /home/hadoop/data/telecom_project/ct_consumer_lib/ct_consumer-1.0-SNAPS
 | 香蕉        | $1      |   5    |
 | 苹果        | $1      |   6    |
 | 草莓        | $1      |   7    |
---------------------- 
+<br>
 1) db_telecom.tb_contacts <br>
 用于存放用户手机号码与联系人姓名。<br>
 |   列   |  备注   |  类型  |
