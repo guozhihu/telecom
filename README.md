@@ -74,5 +74,39 @@ java -cp /home/hadoop/data/telecom_project/ct_consumer_lib/ct_consumer-1.0-SNAPS
 &ensp;&ensp;&ensp;&ensp;&ensp;\<name>hbase.coprocessor.region.classes\</name>  
 &ensp;&ensp;&ensp;&ensp;&ensp;\<value>com.china.coprocessor.CalleeWriteObserver\</value>  
 \</property>  
-修改后群发到其他HBase所在的机器节点上
+修改后群发到其他HBase所在的机器节点上<br>
+重新启动Hbase集群
 ### 数据分析
+* 作用<br>
+将采集到的数据(即数据采集模块中采集到Hbase中的数据)进行具体的业务分析，将分析结果保存到mysql中，以便web端实时查询分析结果。<br>
+1)用户每天主叫通话个数统计，通话时间统计。<br>
+2)用户每月通话记录统计，通话时间统计。<br>
+3)用户每年通话记录统计，通话时间统计。<br>
+* Mysql中的表结构设计<br>
+1) db_telecom.tb_contacts <br>
+用于存放用户手机号码与联系人姓名。<br>
+|   列   |  备注   |  类型  |
+| :----: | :----: | :----: |
+|id        | 自增主键   | int(11) NOT NULL      | 
+|telephone | 手机号码   | varchar(255) NOT NULL | 
+|name      | 联系人姓名 | varchar(255) NOT NULL |
+<br>
+2) db_telecom.tb_call <br>
+用于存放某个时间维度下通话次数与通话时长的总和。<br>
+|   列   |  备注   |  类型  |
+| :----: | :----: | :----: |
+|id_date_contact  |自增主键        | varchar(255) NOT NULL    | 
+|id_date_dimension|时间维度id      | int(11) NOT NULL         | 
+|id_contact       |查询人的电话号码 | int(11) NOT NULL         |
+|call_sum         |通话次数总和     |int(11) NOT NULL DEFAULT 0| 
+|call_duration_sum|通话时长总和     |int(11) NOT NULL DEFAULT 0| 
+<br>
+3) db_telecom.tb_dimension_date 
+用于存放时间维度的相关数据 
+|   列   |  备注   |  类型  |
+| :----: | :----: | :----: |
+|id    | 自增主键                                               | int(11) NOT NULL | 
+|year  | 年，当前通话信息所在年                                   | int(11) NOT NULL | 
+|month | 月，当前通话信息所在月，如果按照年来统计信息，则month 为-1。| int(11) NOT NULL |
+|day   | 日，当前通话信息所在日，如果是按照月来统计信息，则day 为-1。| int(11) NOT NULL |
+<br>

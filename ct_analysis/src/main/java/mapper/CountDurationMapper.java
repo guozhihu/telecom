@@ -13,11 +13,11 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CountDurationMapper extends TableMapper<ComDimension, Text>{
+public class CountDurationMapper extends TableMapper<ComDimension, Text> {
     private ComDimension comDimension = new ComDimension();
     private Text durationText = new Text();
     private Map<String, String> phoneNameMap;
-
+    
     @Override
     protected void setup(Context context) throws IOException, InterruptedException {
         super.setup(context);
@@ -43,35 +43,35 @@ public class CountDurationMapper extends TableMapper<ComDimension, Text>{
         phoneNameMap.put("17601615878", "沈丹");
         phoneNameMap.put("15897468949", "褚美丽");
     }
-
+    
     @Override
     protected void map(ImmutableBytesWritable key, Result value, Context context) throws IOException, InterruptedException {
         //05_19902496992_20170312154840_15542823911_1_1288
         String rowKey = Bytes.toString(key.get());
         String[] splits = rowKey.split("_");
-        if(splits[4].equals("0")) return;
-
+        if (splits[4].equals("0")) return;
+        
         //以下数据全部是主叫数据，但是也包含了被叫电话的数据
         String caller = splits[1];
         String callee = splits[3];
         String buildTime = splits[2];
         String duration = splits[5];
         durationText.set(duration);
-
+        
         String year = buildTime.substring(0, 4);
         String month = buildTime.substring(4, 6);
         String day = buildTime.substring(6, 8);
-
+        
         //组装ComDimension
         //组装DateDimension
         ////05_19902496992_20170312154840_15542823911_1_1288
         DateDimension yearDimension = new DateDimension(year, "-1", "-1");
         DateDimension monthDimension = new DateDimension(year, month, "-1");
         DateDimension dayDimension = new DateDimension(year, month, day);
-
+        
         //组装ContactDimension
         ContactDimension callerContactDimension = new ContactDimension(caller, phoneNameMap.get(caller));
-
+        
         //开始聚合主叫数据
         comDimension.setContactDimension(callerContactDimension);
         //年
@@ -83,7 +83,7 @@ public class CountDurationMapper extends TableMapper<ComDimension, Text>{
         //日
         comDimension.setDateDimension(dayDimension);
         context.write(comDimension, durationText);
-
+        
         //开始聚合被叫数据
         ContactDimension calleeContactDimension = new ContactDimension(callee, phoneNameMap.get(callee));
         comDimension.setContactDimension(calleeContactDimension);

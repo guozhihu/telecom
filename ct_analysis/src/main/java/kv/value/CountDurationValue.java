@@ -7,7 +7,9 @@ import java.io.DataOutput;
 import java.io.IOException;
 
 public class CountDurationValue extends BaseValue{
+    // 通话总次数
     private String callSum;
+    // 通话总时长
     private String callDurationSum;
 
     public CountDurationValue(){

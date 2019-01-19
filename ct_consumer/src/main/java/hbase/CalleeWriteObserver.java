@@ -17,6 +17,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 public class CalleeWriteObserver extends BaseRegionObserver {
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+    
     @Override
     public void postPut(ObserverContext<RegionCoprocessorEnvironment> e, Put put, WALEdit edit, Durability durability) throws IOException {
         super.postPut(e, put, edit, durability);
@@ -54,12 +56,38 @@ public class CalleeWriteObserver extends BaseRegionObserver {
         calleePut.addColumn(Bytes.toBytes("f2"), Bytes.toBytes("flag"), Bytes.toBytes(flag));
         calleePut.addColumn(Bytes.toBytes("f2"), Bytes.toBytes("duration"), Bytes.toBytes(duration));
         
+        // 修改bug：Bytes.toBytes(long)的源码如下
+        /**
+         * public static byte[] toBytes(long val) {
+         *     byte[] b = new byte[8];
+         *
+         *     for(int i = 7; i > 0; --i) {
+         *         b[i] = (byte)((int)val);
+         *         val >>>= 8;
+         *     }
+         *
+         *     b[0] = (byte)((int)val);
+         *     return b;
+         * }
+         * 该方法将long类型的值转化为8字节，而时间戳为13个字节，采用该方法会导致数据丢失，重新解析该时间时会出现时间解析异常
+         */
+//        try {
+//            calleePut.addColumn(Bytes.toBytes("f2"), Bytes.toBytes("build_time_ts"), Bytes.toBytes(new SimpleDateFormat("yyyyMMddHHmmss").parse(buildTime).getTime()));
+//        } catch (ParseException e1) {
+//            calleePut.addColumn(Bytes.toBytes("f2"), Bytes.toBytes("build_time_ts"), Bytes.toBytes(""));
+//            e1.printStackTrace();
+//        }
+        
+        // 针对上面的问题修改如下
+        // 生成时间戳
+        String buildTimeTs = "";
         try {
-            calleePut.addColumn(Bytes.toBytes("f2"), Bytes.toBytes("build_time_ts"), Bytes.toBytes(new SimpleDateFormat("yyyyMMddHHmmss").parse(buildTime).getTime()));
+            buildTimeTs = String.valueOf(sdf.parse(buildTime).getTime());
         } catch (ParseException e1) {
-            calleePut.addColumn(Bytes.toBytes("f2"), Bytes.toBytes("build_time_ts"), Bytes.toBytes(""));
             e1.printStackTrace();
         }
+        calleePut.addColumn(Bytes.toBytes("f2"), Bytes.toBytes("build_time_ts"), Bytes.toBytes(buildTimeTs));
+        
         Table hTable = e.getEnvironment().getTable(TableName.valueOf(targetTableName));
         hTable.put(calleePut);
         hTable.close();

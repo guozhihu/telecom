@@ -7,7 +7,6 @@ import utils.JDBCInstance;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.mapreduce.*;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputCommitter;
-import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import utils.JDBCUtil;
 
 import java.io.IOException;
@@ -41,7 +40,7 @@ public class MysqlOutputFormat extends OutputFormat<ComDimension, CountDurationV
     @Override
     public OutputCommitter getOutputCommitter(TaskAttemptContext context) throws IOException, InterruptedException {
         if(committer == null){
-            String name = context.getConfiguration().get(FileOutputFormat.OUTDIR);
+            String name = context.getConfiguration().get("mapred.output.dir");
             Path outputPath = name == null ? null : new Path(name);
             committer = new FileOutputCommitter(outputPath, context);
         }

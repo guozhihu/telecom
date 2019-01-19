@@ -65,8 +65,8 @@ public class HBaseDAO {
             if (cacheList.size() == 0) {
                 connection = ConnectionInstanceUtil.getConnection(conf);
                 table = (HTable) connection.getTable(TableName.valueOf(tableName));
-                table.setAutoFlushTo(false);
-                table.setWriteBufferSize(2 * 1024 * 1024);
+                table.setAutoFlushTo(false); // 禁止自动提交数据
+                table.setWriteBufferSize(2 * 1024 * 1024); // 设置内存缓存大小
             }
             String[] splitOri = ori.split(",");
             
@@ -93,8 +93,9 @@ public class HBaseDAO {
             
             cacheList.add(put);
             
-            if (cacheList.size() >= 30) {
+            if (cacheList.size() >= 30) { // 这里的缓存数据量根据具体场景配置，这里为了快速方便看效果
                 table.put(cacheList);
+                // 手动提交数据
                 table.flushCommits();
                 table.close();
                 cacheList.clear();

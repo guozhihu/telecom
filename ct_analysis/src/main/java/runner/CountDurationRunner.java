@@ -1,7 +1,5 @@
 package runner;
 
-
-import com.sun.tools.internal.ws.wsdl.document.jaxws.Exception;
 import kv.key.ComDimension;
 import kv.value.CountDurationValue;
 import mapper.CountDurationMapper;
@@ -22,18 +20,19 @@ import org.apache.hadoop.util.ToolRunner;
 
 import java.io.IOException;
 
-public class CountDurationRunner implements Tool{
+public class CountDurationRunner implements Tool {
     private Configuration conf = null;
+    
     @Override
     public void setConf(Configuration conf) {
         this.conf = HBaseConfiguration.create(conf);
     }
-
+    
     @Override
     public Configuration getConf() {
         return this.conf;
     }
-
+    
     @Override
     public int run(String[] args) throws Exception {
         //得到conf
@@ -47,7 +46,7 @@ public class CountDurationRunner implements Tool{
         initReducerOutputConfig(job);
         return job.waitForCompletion(true) ? 0 : 1;
     }
-
+    
     private void initHBaseInputConfig(Job job) {
         Connection connection = null;
         Admin admin = null;
@@ -55,44 +54,44 @@ public class CountDurationRunner implements Tool{
             String tableName = "ns_ct:calllog";
             connection = ConnectionFactory.createConnection(job.getConfiguration());
             admin = connection.getAdmin();
-            if(!admin.tableExists(TableName.valueOf(tableName))) throw new RuntimeException("无法找到目标表.");
+            if (!admin.tableExists(TableName.valueOf(tableName))) throw new RuntimeException("无法找到目标表.");
             Scan scan = new Scan();
             //可以优化
             //初始化Mapper
             TableMapReduceUtil.initTableMapperJob(
-                    tableName,
-                    scan,
-                    CountDurationMapper.class,
-                    ComDimension.class,
-                    Text.class,
-                    job,
-                    true);
-
-
+                tableName,
+                scan,
+                CountDurationMapper.class,
+                ComDimension.class,
+                Text.class,
+                job,
+                true);
+            
+            
         } catch (IOException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             try {
-                if(admin != null){
+                if (admin != null) {
                     admin.close();
                 }
-                if(connection != null && !connection.isClosed()){
+                if (connection != null && !connection.isClosed()) {
                     connection.close();
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-
+        
     }
-
+    
     private void initReducerOutputConfig(Job job) {
         job.setReducerClass(CountDurationReducer.class);
         job.setOutputKeyClass(ComDimension.class);
         job.setOutputValueClass(CountDurationValue.class);
         job.setOutputFormatClass(MysqlOutputFormat.class);
     }
-
+    
     public static void main(String[] args) {
         try {
             int status = ToolRunner.run(new CountDurationRunner(), args);
