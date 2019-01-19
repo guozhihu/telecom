@@ -110,3 +110,7 @@ java -cp /home/hadoop/data/telecom_project/ct_consumer_lib/ct_consumer-1.0-SNAPS
 |month   | 月，当前通话信息所在月，如果按照年来统计信息，则month 为-1。| int(11) NOT NULL |
 |day     | 日，当前通话信息所在日，如果是按照月来统计信息，则day 为-1。| int(11) NOT NULL |
 <br>
+| 一个普通标题 | 一个普通标题 | 一个普通标题 |
+| ------ | ------ | ------ |
+| 短文本 | 中等文本 | 稍微长一点的文本 |
+| 稍微长一点的文本 | 短文本 | 中等文本 |
