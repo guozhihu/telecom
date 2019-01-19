@@ -76,3 +76,8 @@ java -cp /home/hadoop/data/telecom_project/ct_consumer_lib/ct_consumer-1.0-SNAPS
 \</property>  
 修改后群发到其他HBase所在的机器节点上
 ### 数据分析
+| 水果        | 价格    |  数量  |
+| --------   | -----:   | :----: |
+| 香蕉        | $1      |   5    |
+| 苹果        | $1      |   6    |
+| 草莓        | $1      |   7    |
