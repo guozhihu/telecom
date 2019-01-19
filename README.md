@@ -82,8 +82,9 @@ java -cp /home/hadoop/data/telecom_project/ct_consumer_lib/ct_consumer-1.0-SNAPS
 1)用户每天主叫通话个数统计，通话时间统计。<br>
 2)用户每月通话记录统计，通话时间统计。<br>
 3)用户每年通话记录统计，通话时间统计。<br>
-* Mysql中的表结构设计<br>
-1) db_telecom.tb_contacts <br>
+* Mysql中的表结构设计 <br>
+
+(1) db_telecom.tb_contacts <br>
 用于存放用户手机号码与联系人姓名。<br>
 <table>
     <tr>
@@ -106,9 +107,8 @@ java -cp /home/hadoop/data/telecom_project/ct_consumer_lib/ct_consumer-1.0-SNAPS
         <td>联系人姓名</td>
         <td>varchar(255) NOT NULL</td>
     </tr>
-</table>
-<br>
-2) db_telecom.tb_call <br>
+</table><br>
+(2) db_telecom.tb_call <br>
 用于存放某个时间维度下通话次数与通话时长的总和。<br>
 <table>
     <tr>
@@ -142,7 +142,7 @@ java -cp /home/hadoop/data/telecom_project/ct_consumer_lib/ct_consumer-1.0-SNAPS
         <td>int(11) NOT NULL DEFAULT 0</td>
     </tr>
 </table><br>
-3) db_telecom.tb_dimension_date <br> 
+(3) db_telecom.tb_dimension_date <br> 
 用于存放时间维度的相关数据 <br>
 <table>
     <tr>
