@@ -83,9 +83,91 @@ java -cp /home/hadoop/data/telecom_project/ct_consumer_lib/ct_consumer-1.0-SNAPS
 2)用户每月通话记录统计，通话时间统计。<br>
 3)用户每年通话记录统计，通话时间统计。<br>
 * Mysql中的表结构设计<br>
+1) db_telecom.tb_contacts <br>
+用于存放用户手机号码与联系人姓名。<br>
 <table>
-<tr><th>列</th><th>备注</th><th>类型</th></tr>
-<tr><td text-align="center" border="1">id</td><td style="text-align: center">自增主键</td><td style="text-align: center">int(11) NOT NULL</td></tr>
-<tr><td style="text-align: center">telephone</td><td style="text-align: center">手机号码</td><td style="text-align: center">varchar(255) NOT NULL</td></tr>
-<tr><td style="text-align: center">name</td><td style="text-align: center">联系人姓名</td><td style="text-align: center">varchar(255) NOT NULL</td></tr>
+    <tr>
+        <th>列</th>
+        <th>备注</th>
+        <th>类型</th>
+    </tr>
+    <tr>
+        <td>id</td>
+        <td>自增主键</td>
+        <td>int(11) NOT NULL</td>
+    </tr>
+    <tr>
+        <td>telephone</td>
+        <td>手机号码</td>
+        <td>varchar(255) NOT NULL</td>
+    </tr>
+    <tr>
+        <td>name</td>
+        <td>联系人姓名</td>
+        <td>varchar(255) NOT NULL</td>
+    </tr>
 </table>
+<br>
+2) db_telecom.tb_call <br>
+用于存放某个时间维度下通话次数与通话时长的总和。<br>
+<table>
+    <tr>
+        <th>列</th>
+        <th>备注</th>
+        <th>类型</th>
+    </tr>
+    <tr>
+        <td>id_date_contact</td>
+        <td>自增主键</td>
+        <td>varchar(255) NOT NULL</td>
+    </tr>
+    <tr>
+        <td>id_date_dimension</td>
+        <td>时间维度id </td>
+        <td>int(11) NOT NULL</td>
+    </tr>
+    <tr>
+        <td>id_contact</td>
+        <td>查询人的电话号码</td>
+        <td>int(11) NOT NULL</td>
+    </tr>
+    <tr>
+        <td>call_sum</td>
+        <td>通话次数总和</td>
+        <td>int(11) NOT NULL DEFAULT 0</td>
+    </tr>
+    <tr>
+        <td>call_duration_sum</td>
+        <td>通话时长总和</td>
+        <td>int(11) NOT NULL DEFAULT 0</td>
+    </tr>
+</table><br>
+3) db_telecom.tb_dimension_date <br> 
+用于存放时间维度的相关数据 <br>
+<table>
+    <tr>
+        <th>列</th>
+        <th>备注</th>
+        <th>类型</th>
+    </tr>
+    <tr>
+        <td>id</td>
+        <td>自增主键</td>
+        <td>int(11) NOT NULL</td>
+    </tr>
+    <tr>
+        <td>year</td>
+        <td>年，当前通话信息所在年</td>
+        <td>int(11) NOT NULL</td>
+    </tr>
+    <tr>
+        <td>month</td>
+        <td>月，当前通话信息所在月，如果按照年来统计信息，则month 为-1。</td>
+        <td>int(11) NOT NULL</td>
+    </tr>
+    <tr>
+        <td>day</td>
+        <td>日，当前通话信息所在日，如果是按照月来统计信息，则day 为-1。</td>
+        <td>int(11) NOT NULL</td>
+    </tr>
+</table><br>
