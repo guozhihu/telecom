@@ -83,9 +83,9 @@ java -cp /home/hadoop/data/telecom_project/ct_consumer_lib/ct_consumer-1.0-SNAPS
 2)用户每月通话记录统计，通话时间统计。<br>
 3)用户每年通话记录统计，通话时间统计。<br>
 * Mysql中的表结构设计<br>
-<table style="text-align:center">
+<table>
 <tr><th>列</th><th>备注</th><th>类型</th></tr>
-<tr><td style="text-align: center;">id</td><td style="text-align: center;">自增主键</td><td style="text-align: center;">int(11) NOT NULL</td></tr>
-<tr><td style="text-align: center;">telephone</td><td style="text-align: center;">手机号码</td><td style="text-align: center;">varchar(255) NOT NULL</td></tr>
-<tr><td style="text-align: center;">name</td><td style="text-align: center;">联系人姓名</td><td style="text-align: center;">varchar(255) NOT NULL</td></tr>
+<tr><td style="text-align: center">id</td><td style="text-align: center">自增主键</td><td style="text-align: center">int(11) NOT NULL</td></tr>
+<tr><td style="text-align: center">telephone</td><td style="text-align: center">手机号码</td><td style="text-align: center">varchar(255) NOT NULL</td></tr>
+<tr><td style="text-align: center">name</td><td style="text-align: center">联系人姓名</td><td style="text-align: center">varchar(255) NOT NULL</td></tr>
 </table>
