@@ -118,7 +118,7 @@ java -cp /home/hadoop/data/telecom_project/ct_consumer_lib/ct_consumer-1.0-SNAPS
     </tr>
     <tr>
         <td>id_date_contact</td>
-        <td>自增主键</td>
+        <td>复合主键（联系人维度 id，时间维度 id）</td>
         <td>varchar(255) NOT NULL</td>
     </tr>
     <tr>
