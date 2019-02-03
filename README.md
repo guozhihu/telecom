@@ -178,6 +178,6 @@ java -cp /home/hadoop/data/telecom_project/ct_consumer_lib/ct_consumer-1.0-SNAPS
 3)编写执行脚本文件<br>
 \> vim telecom_analysis.sh<br>
 \#!/bin/bash<br>
-yarn jar /home/hadoop/data/telecom_project/jars/ct_analysis-1.0-SNAPSHOT.jar<br>
+yarn jar /home/hadoop/data/telecom_project/jars/ct_analysis-1.0-SNAPSHOT.jar runner.CountDurationRunner<br>
 4)执行脚本
 \> sh /home/hadoop/data/telecom_project/shell_scripts/telecom_analysis.sh 
