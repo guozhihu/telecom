@@ -57,6 +57,8 @@ public class CountDurationRunner implements Tool {
             if (!admin.tableExists(TableName.valueOf(tableName))) throw new RuntimeException("无法找到目标表.");
             Scan scan = new Scan();
             //可以优化
+            scan.setCaching(500);		 // 1 is the default in Scan, which will be bad for MapReduce jobs
+            scan.setCacheBlocks(false);	 // don't set to true for MR jobs
             //初始化Mapper
             TableMapReduceUtil.initTableMapperJob(
                 tableName,

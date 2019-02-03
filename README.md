@@ -171,3 +171,13 @@ java -cp /home/hadoop/data/telecom_project/ct_consumer_lib/ct_consumer-1.0-SNAPS
         <td>int(11) NOT NULL</td>
     </tr>
 </table><br>
+
+* 运行测试<br>
+1)将mysql驱动包放入到hadoop根目录的lib目录下<br>
+2)将ct_analysis模块打jar包ct_analysis-1.0-SNAPSHOT.jar<br>
+3)编写执行脚本文件<br>
+\> vim telecom_analysis.sh<br>
+\#!/bin/bash<br>
+yarn jar /home/hadoop/data/telecom_project/jars/ct_analysis-1.0-SNAPSHOT.jar<br>
+4)执行脚本
+\> sh /home/hadoop/data/telecom_project/shell_scripts/telecom_analysis.sh 

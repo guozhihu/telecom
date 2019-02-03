@@ -5,7 +5,7 @@ import java.sql.*;
 public class JDBCUtil {
     //定义JDBC连接器实例化所需要的固定参数
     private static final String MYSQL_DRIVER_CLASS = "com.mysql.jdbc.Driver";
-    private static final String MYSQL_URL = "jdbc:mysql://linux01:3306/db_telecom?useUnicode=true&characterEncoding=UTF-8";
+    private static final String MYSQL_URL = "jdbc:mysql://mini3:3306/db_telecom?useUnicode=true&characterEncoding=UTF-8";
     private static final String MYSQL_USERNAME = "root";
     private static final String MYSQL_PASSWORD = "123456";
     
